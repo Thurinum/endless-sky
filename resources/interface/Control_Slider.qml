@@ -7,12 +7,15 @@ Row {
 
 	property string label
 	property string key
+	property point range: vsh.getRange(key)
 
 	Text { text: control.label }
 	Slider {
 		id: slider
-		from: parseFloat(vsh.config("Limits/" + control.key.split('/')[0] + "_" + control.key.split('/')[1] + "Min"))
-		to: parseFloat(vsh.config("Limits/" + control.key.split('/')[0] + "_" + control.key.split('/')[1] + "Max"))
+		from: range.x
+		to: range.y
+		stepSize: 1
+		value: slider.value = parseInt(vsh.config(control.key));
 
 		onValueChanged: vsh.setConfig(control.key, value)
 	}

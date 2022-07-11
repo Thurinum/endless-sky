@@ -16,3 +16,13 @@ QVariant Backend::config(const QString& key) {
 void Backend::setConfig(const QString& key, const QVariant& value) {
 	m_settings->setValue(key, value);
 }
+
+QPoint Backend::getRange(const QString& key) {
+	QString base  = "Limits/" + key.split('/')[0] + "_" + key.split('/')[1] + "_";
+	QPoint  range = {config(base + "Min").toInt(), config(base + "Max").toInt()};
+
+	if (range.x() == range.y())
+		qWarning() << "Slider " << key << " may have an invalid range. Is it specified in INI file?";
+
+	return range;
+}

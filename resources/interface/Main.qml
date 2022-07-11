@@ -72,7 +72,10 @@ Flickable {
 						sun.x = sun.x + sun.sunangle / 100
 				}
 				
-				if (vsh.config("Main/bShowClouds") && rando < 0.5 && root.numClouds <= rand(0.75, 10) * parseInt(vsh.config("Main/iMaxClouds"))) {
+				let min = parseInt(vsh.config("Main/iMinClouds"));
+				let max = parseInt(vsh.config("Main/iMaxClouds"));
+
+				if (vsh.config("Main/bSpawnClouds") && (root.numClouds < min || (root.numClouds <= rando * max))) {
 					createCloud();
 					root.numClouds++;
 				}

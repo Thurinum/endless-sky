@@ -18,14 +18,20 @@ Rectangle {
 		
 		Visihaut.Control_Slider {
 			width: hud.width
+			label: "Min clouds"
+			key: "Main/iMinClouds"
+		}
+
+		Visihaut.Control_Slider {
+			width: hud.width
 			label: "Max clouds"
 			key: "Main/iMaxClouds"
 		}
 		
 		Visihaut.Control_CheckBox {
 			width: hud.width
-			label: "Show clouds"
-			key: "Main/bShowClouds"
+			label: "Spawn clouds"
+			key: "Main/bSpawnClouds"
 		}
 	}
 }

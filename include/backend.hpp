@@ -6,6 +6,7 @@
 
 #include <QDebug>
 #include <QObject>
+#include <QPoint>
 #include <QSettings>
 
 // Backend class used for interacting with qml
@@ -21,6 +22,8 @@ public:
 	// Get INI setting from QML
 	Q_INVOKABLE QVariant config(const QString& key);
 	Q_INVOKABLE void	   setConfig(const QString& key, const QVariant& value);
+
+	Q_INVOKABLE QPoint getRange(const QString& key);
 
 private:
 	QSettings* m_settings;
