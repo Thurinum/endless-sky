@@ -19,31 +19,31 @@ Rectangle {
 		Visihaut.Control_Slider {
 			width: hud.width
 			label: "Min cloud speed"
-			key: "Main/iMinCloudSpeed"
+			key: "Clouds/iMinSpeed"
 		}
 
 		Visihaut.Control_Slider {
 			width: hud.width
 			label: "Max cloud speed"
-			key: "Main/iMaxCloudSpeed"
+			key: "Clouds/iMaxSpeed"
 		}
 
 		Visihaut.Control_Slider {
 			width: hud.width
 			label: "Min clouds"
-			key: "Main/iMinClouds"
+			key: "Clouds/iMinSpawn"
 		}
 
 		Visihaut.Control_Slider {
 			width: hud.width
 			label: "Max clouds"
-			key: "Main/iMaxClouds"
+			key: "Clouds/iMaxSpawn"
 		}
 		
 		Visihaut.Control_CheckBox {
 			width: hud.width
 			label: "Spawn clouds"
-			key: "Main/bSpawnClouds"
+			key: "Clouds/bSpawn"
 		}
 	}
 }

@@ -5,9 +5,7 @@ import Qt.labs.settings 1.0
 // im running out of time so this code is a huge mess lol
 Image {
 	id: cloud
-	
-	property bool disabled: false;
-	
+		
 	x: if (vsh_viewSize) vsh_viewSize
 	y: rand(-height / 2, vsh_viewSize / 2 - height / 2)
 	
@@ -17,34 +15,22 @@ Image {
 	scale: rand(0.5, 1.3)
 	source: "../graphics/nuagez.png"
 	
-	
-	
-
-	
 	// transform: Translate {id: layoutParallax; x: -parent.parallax.x; y: -parent.parallax.y}
 	
 	Timer {
 		id: movement
 		running: true
 		repeat: true
-		interval: Math.ceil(rand(1, 100) / rand(parseInt(vsh.config("Main/iMinCloudSpeed")),
-				   parseInt(vsh.config("Main/iMaxCloudSpeed"))))
+		interval: Math.ceil(rand(1, 100) / rand(parseInt(vsh.config("Clouds/iMinSpeed")),
+				   parseInt(vsh.config("Clouds/iMaxSpeed"))))
 		
 		onTriggered: {
 			if (cloud.x < -300 && !cloud.disabled) {
 				cloud.parent.numClouds--;
-				cloud.disabled = true;
+				cloud.destroy() // nuke 'em
 			}
 			
 			cloud.x--;
-		}
-	}
-	
-	transitions: Transition {
-		NumberAnimation {
-			property: "x"
-			duration: parseInt(vsh.config("Main/iRefreshInterval"))
-			easing.type: Easing.InOutQuad
 		}
 	}
 	
