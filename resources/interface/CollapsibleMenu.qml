@@ -7,7 +7,7 @@ import "./" as Visihaut
 Rectangle {
 	id: hud
 	color: "white"
-	width: 200
+	width: 250
 	height: hudLayout.implicitHeight
 	radius: 5
 	
@@ -16,6 +16,18 @@ Rectangle {
 		spacing: 10
 		padding: 10
 		
+		Visihaut.Control_Slider {
+			width: hud.width
+			label: "Min cloud speed"
+			key: "Main/iMinCloudSpeed"
+		}
+
+		Visihaut.Control_Slider {
+			width: hud.width
+			label: "Max cloud speed"
+			key: "Main/iMaxCloudSpeed"
+		}
+
 		Visihaut.Control_Slider {
 			width: hud.width
 			label: "Min clouds"

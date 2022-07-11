@@ -21,14 +21,14 @@ Image {
 	
 
 	
-	// transform: Translate {id: layoutParallax; x: -parent.parallax.x; y: -parent.parallax.y} 
+	// transform: Translate {id: layoutParallax; x: -parent.parallax.x; y: -parent.parallax.y}
 	
 	Timer {
 		id: movement
 		running: true
 		repeat: true
-		interval: rand(0.5, 10)
-			    * parseInt(vsh.config("Main/iCloudSpeed"))
+		interval: Math.ceil(rand(1, 100) / rand(parseInt(vsh.config("Main/iMinCloudSpeed")),
+				   parseInt(vsh.config("Main/iMaxCloudSpeed"))))
 		
 		onTriggered: {
 			if (cloud.x < -300 && !cloud.disabled) {
