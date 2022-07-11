@@ -1,9 +1,9 @@
-#include <QtQuick>
 #include <QSettings>
+#include <QtQuick>
 
 #include "backend.hpp"
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
 	QGuiApplication app(argc, argv);
 	QGuiApplication::setApplicationName("Visihaut");
 	QGuiApplication::setWindowIcon(QIcon("resources/graphics/favicon.png"));
@@ -16,8 +16,8 @@ int main(int argc, char *argv[]) {
 	// QSurfaceFormat format;
 	// format.setSamples(16);
 
-	QQuickView view;
-	int viewSize = backend.config("Display/iSize").toInt();
+	QQuickView	view;
+	int		viewSize = backend.config("Display/iSize").toInt();
 	QQmlEngine* engine   = view.engine();
 
 	engine->rootContext()->setContextProperty("vsh", &backend);
@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
 	view.setMaximumHeight(viewSize);
 	view.setMinimumWidth(viewSize);
 	view.setMinimumHeight(viewSize);
-	
+
 	// view.setFormat(format);
 
 	view.show();

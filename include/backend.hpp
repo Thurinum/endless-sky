@@ -4,19 +4,27 @@
 #include <iostream>
 #include <string>
 
+#include <QDebug>
 #include <QObject>
 #include <QSettings>
-#include <QDebug>
 
 // Backend class used for interacting with qml
-class Backend : public QObject {
+class Backend : public QObject
+{
 	Q_OBJECT
 public:
-	explicit Backend (QObject* parent = nullptr) : QObject(parent) {}
-	
+	explicit Backend(QObject* parent = nullptr) : QObject(parent) {
+		m_settings		    = new QSettings("Visihaut.ini", QSettings::IniFormat);
+		m_shouldPrintSettings = config("Debug/bPrintSettings").toBool();
+	}
+
 	// Get INI setting from QML
-	Q_INVOKABLE QVariant config(QString key, QVariant fallback="");
-	Q_INVOKABLE void setConfig(QString key, QVariant value);
+	Q_INVOKABLE QVariant config(const QString& key);
+	Q_INVOKABLE void	   setConfig(const QString& key, const QVariant& value);
+
+private:
+	QSettings* m_settings;
+	bool	     m_shouldPrintSettings = false;
 };
 
-#endif // AGENDUM_BACKEND
+#endif // VISIHAUT_BACKEND

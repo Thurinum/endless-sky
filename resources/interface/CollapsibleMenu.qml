@@ -6,9 +6,9 @@ import "./" as Visihaut
 
 Rectangle {
 	id: hud
-	color: Qt.rgba(0.6, 0.6, 0.6, 0.6)
-	width: hudLayout.width
-	height: hudLayout.height
+	color: "white"
+	width: 200
+	height: hudLayout.implicitHeight
 	radius: 5
 	
 	Column {
@@ -16,21 +16,16 @@ Rectangle {
 		spacing: 10
 		padding: 10
 		
-		width: 200
-		height: 1024
-		
 		Visihaut.Control_Slider {
-			width: 100
-			height: 100
+			width: hud.width
 			label: "Max clouds"
 			key: "Main/iMaxClouds"
 		}
 		
 		Visihaut.Control_CheckBox {
-			width: 100
-			height: 100
-			label: "Hide clouds"
-			key: "Main/bHideClouds"
+			width: hud.width
+			label: "Show clouds"
+			key: "Main/bShowClouds"
 		}
 	}
 }

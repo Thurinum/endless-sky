@@ -1,18 +1,15 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
-Item {
-	id: control
-	
+CheckBox {
+	id: checkbox
+
 	property string label
 	property string key
-	
-	CheckBox {
-		text: control.label
-		// checked: vsh.config(control.key);
-		
-		onCheckStateChanged: {
-			vsh.setConfig(control.key, checked);
-		}
-	}
-}		
+
+	text: label
+	checked: vsh.config(key)
+
+	onCheckStateChanged: vsh.setConfig(key, checked);
+}
+

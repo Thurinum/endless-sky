@@ -12,7 +12,6 @@ Flickable {
 	property real lightness: sun.getLightness()
 	scale: 1.1
 	
-	
 	Rectangle {
 		id: sky
 		
@@ -20,7 +19,7 @@ Flickable {
 		
 		width: vsh_viewSize
 		height: vsh_viewSize
-				
+
 		color: Qt.hsla(0.55, 1, parent.lightness, 1.0);
 	}
 	
@@ -57,7 +56,6 @@ Flickable {
 				return Math.floor(Math.random() * (max - min) + min);
 			}
 			
-	
 			onTriggered: {
 				parent.sunangle++;
 				
@@ -67,28 +65,26 @@ Flickable {
 					parent.sunangle = 0;
 				}
 				
-				if ( sun.sunangle > 180) {
-					
+				if (sun.sunangle > 180) {
 					sun.x = -100
 				} else if (sun.sunangle > 45) {
-					if (sun.x < 100)	
-					sun.x = sun.x + sun.sunangle / 100
-				} 
+					if (sun.x < 100)
+						sun.x = sun.x + sun.sunangle / 100
+				}
 				
-				if (vsh.config("Main/bHideClouds") == false  &&
-					rando < 0.5 && root.numClouds <= rand(0.75, 10) * parseInt(vsh.config("Main/iMaxClouds"))) {
+				if (vsh.config("Main/bShowClouds") && rando < 0.5 && root.numClouds <= rand(0.75, 10) * parseInt(vsh.config("Main/iMaxClouds"))) {
 					createCloud();
 					root.numClouds++;
 				}
 			}
 			
 		}
-				
+
 		transform: Rotation {
 			id: sunrotation
 			
 			angle: sun.sunangle
-			origin.x: vsh_viewSize / 2 
+			origin.x: vsh_viewSize / 2
 			origin.y: vsh_viewSize / 2
 			
 		}
@@ -100,13 +96,13 @@ Flickable {
 		// 		easing.type: Easing.InOutQuad
 		// 	}
 		// }
-		// 
+		//
 		
 		function getLightness() {
 			let lightness;
 			
-			if (sun.sunangle <= 45) 
-		 		lightness = (0.01 * sun.sunangle) 
+			if (sun.sunangle <= 45)
+				lightness = (0.01 * sun.sunangle)
 			else if (sun.sunangle > 45 && sun.sunangle <= 90) {
 				lightness = 1 - (0.01 * sun.sunangle);
 				
@@ -115,8 +111,8 @@ Flickable {
 				lightness = 0.1
 			else
 				lightness = 0.1
-				
-				
+
+
 			return lightness;
 		}
 	}
@@ -147,12 +143,12 @@ Flickable {
 					// console.log(moonrotation.moonangle)
 					moon.x = -100
 				} else if (moonrotation.moonangle > 45) {
-					if (moon.x < 100)	
-					moon.x = moon.x + moonrotation.moonangle / 100
-				} 
+					if (moon.x < 100)
+						moon.x = moon.x + moonrotation.moonangle / 100
+				}
 				// Shall we spawn a cloud?
 				// let rand = Math.random();
-				// 
+				//
 				// if (rand < 0.5 && root.numClouds <= parseInt(settings.value("Main/iMaxClouds"))) {
 				// 	let cloud = createCloud();
 				// 	root.numClouds++;
@@ -166,7 +162,7 @@ Flickable {
 			property double moonangle: 180
 			
 			angle: moonangle
-			origin.x: vsh_viewSize / 2 
+			origin.x: vsh_viewSize / 2
 			origin.y: vsh_viewSize / 2
 			
 		}
@@ -181,14 +177,14 @@ Flickable {
 		let obj;
 		let component = Qt.createComponent("Cloud.qml");
 		
-		if (component.status == Component.Ready) {
+		if (component.status === Component.Ready) {
 			obj = component.createObject(root);
 			
-			if (obj == null)
+			if (obj === null)
 				console.warn("Could not create cloud :(");
-		} else if (component.status == Component.Error) {
+		} else if (component.status === Component.Error) {
 			console.warn("Could not create cloud :(:\n"
-					+ component.errorString());
+					 + component.errorString());
 		}
 		
 		return obj;

@@ -1,18 +1,18 @@
 #include "backend.hpp"
 
-QVariant Backend::config(QString key, QVariant fallback) {
-	QSettings settings("Visihaut.ini", QSettings::IniFormat);
-	
-	// qDebug() << key << ":" << settings.value(key);
-	
-	if (settings.contains(key)) {
-		return settings.value(key);
-	}
+QVariant Backend::config(const QString& key) {
+	if (m_shouldPrintSettings)
+		qDebug() << key << ":" << m_settings->value(key);
 
-	return fallback;
+	QVariant val = m_settings->contains(key) ? m_settings->value(key) : QVariant("INVALID");
+
+	// qml cannot implicitly convert string to bool
+	if (val.toString() == "false")
+		val = QVariant(false);
+
+	return val;
 }
 
-void Backend::setConfig(QString key, QVariant value) {
-	QSettings settings("Visihaut.ini", QSettings::IniFormat);
-	settings.setValue(key, value);
+void Backend::setConfig(const QString& key, const QVariant& value) {
+	m_settings->setValue(key, value);
 }
