@@ -14,4 +14,4 @@ Enjoy!
 Use the installer to get the Qt binaries and run from Qt creator. I'll properly add the DLLs later lol.
 
 ### Building on Linux (untested)
-Install Qt (prolly already there) and run. Should work.
+Install Qt (prolly already there), the dev packages and qmake, then build with qmake. Will probably work.
