@@ -1,0 +1,403 @@
+<!--
+	TP3 - 'Super' Dessin SVG
+	========================
+	Copyleft 2021 Maxime Gagnon (public domain).
+	À l'intention de Mgr. Kevin Leduc du cours Avancé de Bureautique.
+	
+	DESCRIPTION
+	Un super dessin SVG.
+	
+	ADVANCED EXTRANEOUS FEATURES
+	Vient avec un effet de parallaxe inutile (voir le script en bas du SVG pour l'activer!).
+	Vient avec l'instantiation de sapins intégrée (à désactiver pour la correction - voir script).
+	Vient avec un clip-path d'une oeuvre art abstraite dans la figure du bonhomme allumette.
+	Vient avec half of the code's comments in English because yes
+	
+	PARAMETRES
+		PARALLAX_ENABLED: Activer/désactiver le parallaxe
+		PARALLAX_MULT: Intensité du parallaxe, à ajuster selon la taille de la fenêtre (et le DPI).
+		SAPINS_INSTANCES_COUNT: Duplique le sapin X fois, avec une intensité de parallaxe différente.
+		SAPINS_RANDOM_HUE: Colorie chaque instance du sapin différement.
+		
+	COMMENTAIRES
+	Impossible de mettre le CSS et JS dans un fichier externe sans embed dans le HTML (ça serait tricher)...
+	"L'oiseau" est animé avec CSS mais aussi avec <animateTransform> (CSS prend le dessus).
+	Désactiver le parallaxe désactive le gradient de fond laid.
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 76">
+	<defs>
+		<clipPath id="clipHead">
+			<path d="M 25 25
+					 A 7, 7, 0, 1, 0, 0, 0
+					 a 7, 7, 90, 0, 0, 25, 25" />
+		</clipPath>
+		
+		<!-- https://learnui.design/tools/gradient-generator.html -->
+		<radialGradient id="backgroundGrad" x1="0" y1="0" x2="800" y2="0" gradientUnits="userSpaceOnUse">
+
+				<stop offset="0" stop-color="#ffffff" />
+			
+				<stop offset="0.16666666666666666" stop-color="#f6f6f6" />
+			
+				<stop offset="0.3333333333333333" stop-color="#e0e0e0" />
+			
+				<stop offset="0.5" stop-color="#c4c4c4" />
+			
+				<stop offset="0.6666666666666666" stop-color="#a9a9a9" />
+			
+				<stop offset="0.8333333333333333" stop-color="#959595" />
+			
+				<stop offset="1" stop-color="#8d8d8d" />
+			
+		</radialGradient>
+	</defs>
+
+	<style>
+		:root {
+			--stroke-color: black;
+			--stroke-thickness: 0.3;
+		}
+
+		.path {
+			fill: transparent;
+			stroke: var(--stroke-color);
+			stroke-width: var(--stroke-thickness);
+		}
+
+		#background {
+			width: 10000%;
+			x: -1000%;
+			height: 80;
+			fill: white;
+		}
+		
+		#soleil {
+			cx: 12;
+			cy: 12;
+			fill: yellow;
+			animation: sunRadius 5s ease-in-out infinite;
+			filter: blur(0.3px);
+		}
+
+		#wrapperOiseau {
+			animation: flight 2s ease-in-out infinite;
+			-webkit-animation: flight ease-in-out 2s infinite;
+		}
+
+		#terrain {
+			/* We can use vw/vh but it doesn't give proper results */
+			/* Likely because SVG viewport != "viewbox" canvas size */
+			width: 10000%; /* on sait jamais */
+			height: 17%;
+			x: -1000%;
+			y: 83%;
+			
+			fill: green;
+		}
+
+		/* Sapin */
+		#wrapperSapin {
+			transform: translate(70%, 64%);
+		}
+		.sapin {
+			fill: green;
+			stroke: darkgreen;
+			stroke-width: 0.5px;
+		}
+		#sapinMiddle {
+			transform: translate(3%, -9%) scale(0.75);
+		}
+		#sapinTop {
+			transform: translate(6%, -15%) scale(0.5);
+		}
+		#sapinStrokeHiderTop {
+			width: 6.4%;
+			height: 10%;
+			fill: green;
+			x: 9.2%;
+			y: -10%;
+		}
+		#sapinStrokeHiderBottom {
+			width: 8.6%;
+			height: 10%;
+			fill: green;
+			x: 8.2%;
+			y: 0;
+		}
+		#sapinTronc {
+			width: 5%;
+			height: 6%;
+			fill: firebrick; /*close enough :P*/
+			
+			x: 10%;
+			y: 13%;
+		}
+
+
+		/* Bonhommes */
+		#clipHead {
+			transform: translate(-3.8%, -5%) scale(0.29);
+		}
+
+		.stickmanStroke {
+			stroke: var(--stroke-color);
+			stroke-width: var(--stroke-thickness);
+		}
+
+		#wrapperStickman1 {
+			transform: translate(25%, 53%);
+		}
+
+		#wrapperStickman2 {
+			transform: translate(55%, -8%) rotate(33deg); /* relative to wrapperStickman1 */
+		}
+
+		.stickman .smile {
+			fill: transparent;
+		}
+		.stickman .head {
+			fill: transparent;
+			stroke: black;
+			stroke-width: var(--stroke-thickness)
+		}
+		.stickman .headFace {
+			width: 17px;
+			height: 14px;
+			x: -11;
+			y: -7;
+			clip-path: url(#clipHead);
+			-webkit-clip-path: url(#clipHead);
+			opacity: 0.3;
+		}
+
+		.stickman .eye {
+			r: 0.5;
+			cy: -1;
+			stroke: var(--stroke-color);
+			stroke-width: var(--stroke-thickness);
+			fill: transparent;
+		}
+		.stickman .eyeLeft {
+			cx: -1;
+		}
+		.stickman .eyeRight {
+			cx: 1;
+		}
+		
+		@keyframes sunRadius {
+			0% {
+				transform: scale(1.0);
+				filter: blur(0.3px);
+			}
+			50% {
+				transform: translate(-1.25px, -1.25px) scale(1.1);
+				filter: blur(3px);
+			}
+			100% {
+				filter: blur(0.3px);
+				transform: scale(1.0);
+			}
+		}
+
+		@keyframes flight {
+			0% {
+				transform: translate(-17%, 2%);
+			}
+			100% {
+				transform: translate(100%, 2%);
+			}
+		}
+	</style>
+	
+	<!-- toile de l'artiste -->
+	<rect id="background" width="100" height="80" fill="white" />
+
+	<!-- astre divin -->
+	<!-- values: https://www.w3.org/TR/smil-animation/#ValuesAttribute -->
+	<circle id="soleil" r="7">
+		<animate id="animSoleil"
+				 attributeName="r"
+				 begin="0s"
+				 dur="3s"
+				 values="7;10;7" 
+				 repeatCount="indefinite" />
+	</circle>
+
+	<!-- abomination ailée -->
+	<!-- CSS anim doesn't support paths so we use a group -->
+	<g id="wrapperOiseau">
+		<path id="oiseau"
+			  class="path"
+			  d="M 12.5 13
+				 Q 12.5 7, 9.5 10
+				 Q 9.5 1, 6.6 7.2" />
+		
+		<!-- We also use CSS for ease-in-out interpol. -->
+		<!-- CSS has precedence over this ugly tag -->
+		<animateTransform id="animOiseau"
+					attributeName="transform"
+					attributeType="XML"
+					type="translate"
+					from="-30 2"
+					to="100 2"
+					dur="3s"
+					repeatCount="indefinite"/>
+	</g>		
+	
+	<!-- pointe de flèche verte -->
+	<g id="wrapperSapin">
+		<rect id="sapinTronc" />
+		<polygon id="sapinBottom" class="sapin"
+				 points="0,10 25,10 12.5,-5" />
+		<polygon id="sapinMiddle" class="sapin"
+				 points="0,10 25,10 12.5,-5" />
+		<polygon id="sapinTop" class="sapin"
+				 points="0,10 25,10 12.5,-5" />
+		<rect id="sapinStrokeHiderTop" />
+		<rect id="sapinStrokeHiderBottom" />
+	</g>
+	
+	<!-- rectangle vert -->
+	<rect id="terrain" />
+
+	<!-- kevin leduc -->
+	<g id="wrapperStickman1" class="stickman">
+		<image class="headFace" href=".\leducCutout.png" />
+		<circle class="head" r="5" />
+		<circle class="eye eyeLeft" />
+		<circle class="eye eyeRight" />
+		<path class="smile stickmanStroke" 
+			  d="M -2.25 0
+				 q 0.7 1.0 2 1
+				 q 2 0 2.5 -1" />
+		<line class="torso stickmanStroke" x1="0" x2="0" y1="5" y2="15" />
+		<path class="arms stickmanStroke"
+			  d="M 0 10
+				 L 7 7
+				 M 0 10
+				 L -7 7" />
+		<path class="legs stickmanStroke"
+			  d="M 0 15
+				 L 5 23
+				 M 0 15
+				 L -5 23" />
+	</g>
+
+	<!-- deep copy of Kevin Leduc's DOM -->
+	<use id="wrapperStickman2" href="#wrapperStickman1" />
+
+	<!-- Effet parallaxe parce que "pourquoi pas" -->
+	<!-- Inspiré par la page d'accueil du projet communautaire à moitié fini de l'an passé -->
+	<!-- https://ecole.meilleure.repl.co/ -->
+	<script>
+		'use strict';
+		
+		////////////////////////////////////////////////////////
+		const PARALLAX_ENABLED = true;
+		const PARALLAX_MULT = 0.003; // essayez 0.100 !
+		const SAPINS_INSTANCES_COUNT = 24; // essayez 696 !
+		const SAPINS_RANDOM_HUE = true;
+		////////////////////////////////////////////////////////
+		
+		if (!PARALLAX_ENABLED)
+			throw "dsfsd"; // very dirty!!!
+		
+		let foreground1 = document.querySelector("#wrapperStickman1");
+		// no need because foreground2 transf. is relative to foreground1
+		//let foreground2 = document.querySelector("#wrapperStickman2");
+		let background1 = document.querySelector("#wrapperSapin");
+		let background2 = document.querySelector("#terrain");
+		let background3 = document.querySelector("#oiseau");
+		let background4 = document.querySelector("#soleil");
+		let background5 = document.querySelector("#background");
+		
+		// Désactiver le CSS anim du Soleil car empêche le parallaxe et
+		// j'ai pas envie de le workaround...
+		// Le inline anim avec animate prend le relai.
+		background4.style.animation = "dummy";
+		
+		// Background gradient
+		background5.style.fill = "url(#backgroundGrad)";
+		
+		// Translations de base
+		function getBaseTrans(element) {
+			let trans = getComputedStyle(element).transform; // "matrix(1, 0, 0, 1, x, y)"
+			
+			if (trans === "none")
+				trans = "matrix(1, 0, 0, 1, 0, 0)";
+			
+			return {
+				x: parseFloat(trans.split(",")[4]),
+				y: parseFloat(trans.split(",")[5])
+			};
+		};
+		
+		let baseTransFg = getBaseTrans(foreground1);
+		let baseTransBg1 = getBaseTrans(background1);
+		let baseTransBg2 = getBaseTrans(background2);
+		let baseTransBg3 = getBaseTrans(background3);
+		let baseTransBg4 = getBaseTrans(background4);
+		let baseTransBg5 = getBaseTrans(background5);
+		
+		// Créer plein de sapins
+		let sapins = [];
+		let sapinsBases = [];
+		let sapinsSensibility = [];
+		
+		for (let i = 0; i &lt; SAPINS_INSTANCES_COUNT; i++) {
+			let sapin = background1.cloneNode(true);
+			sapin.id = `sapin${i + 1}`;
+			sapin.setAttribute("style", `transform: translate(${Math.random() * 2 * 70}%, 64%)`);
+			document.rootElement.append(sapin);
+			
+			let base = getBaseTrans(sapin);
+			
+			sapin.setAttribute("baseTrans", `${base.x},${base.y}`);
+			
+			sapins.push(sapin);
+			sapinsBases.push(base);
+			sapinsSensibility.push(i);
+			
+			if (SAPINS_RANDOM_HUE) {
+				let greenAm = `rgb(0, ${Math.random() * 255 + 128}, 0)`;
+				sapin.children[1].style.fill = greenAm;
+				sapin.children[2].style.fill = greenAm;
+				sapin.children[3].style.fill = greenAm;
+				sapin.children[4].style.fill = greenAm;
+				sapin.children[5].style.fill = greenAm;
+			}
+		}
+		
+		// Faire le parallax
+		function doParallax(element, base, event, invert=false, sensibility=1, yMult=1) {
+			let x = (event.pageX * sensibility) - (window.innerWidth / 2 ) * sensibility;
+			let y = (event.pageY * sensibility) - (window.innerHeight / 2) * sensibility;
+			let dir = invert ? -1 : 1;
+	
+			let transX = base.x + (x * PARALLAX_MULT) * dir;
+			let transY = base.y + (y * PARALLAX_MULT) * dir * yMult;
+			
+			element.style.transform = `matrix(1, 0, 0, 1, ${transX}, ${transY})`;
+		}
+		
+		window.addEventListener("mousemove", function(e) {
+			// les objets les plus proches -> + de sensibilite/vitesse
+			doParallax(foreground1, baseTransFg, e, 5);
+			doParallax(background1, baseTransBg1, e, true, 4, 0.1);
+			doParallax(background2, baseTransBg2, e, true, 3, 0.1);
+			doParallax(background3, baseTransBg3, e, true, 2);
+			doParallax(background4, baseTransBg4, e, true, 1);
+			doParallax(background5, baseTransBg5, e, false, 1, 0.1);
+			
+			if (SAPINS_INSTANCES_COUNT &lt;= 0)
+				return;
+			
+			// lent
+			for (let i = 0; i &lt; SAPINS_INSTANCES_COUNT; i++) {
+				let baseT = sapins[i].getAttribute("baseTrans").split(',');
+				doParallax(sapins[i], sapinsBases[i], e, true, sapinsSensibility[i], 0.1);				
+			}
+		});
+	</script>
+</svg>
